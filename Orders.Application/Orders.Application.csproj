@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+	<RestoreAdditionalProjectSources>
+		https://pkgs.dev.azure.com/416657/ProEP/_packaging/PROEP-Packages/nuget/v3/index.json;
+	</RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Orders.Domain\Orders.Domain.csproj" />
+    <ProjectReference Include="..\Orders.Payment\Orders.Payment.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="FluentValidation" Version="10.2.3" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.2.3" />
+    <PackageReference Include="Google.Protobuf" Version="3.17.3" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.38.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.38.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Stripe.net" Version="39.45.0" />
+	<PackageReference Include="PROEPOrdersProtobufDefinitions" Version="1.0.6">
+		<GeneratePathProperty>true</GeneratePathProperty>
+	</PackageReference>
+  </ItemGroup>
+ <Target Name="CopyFiles" BeforeTargets="PrepareForBuild">
+        <ItemGroup>
+            <File Include="$(PkgPROEPOrdersProtobufDefinitions)\contentFiles\**\*.*"></File>
+        </ItemGroup>
+        <Copy SourceFiles="@(File)" DestinationFolder="$(ProjectDir)\Protos"></Copy>
+  </Target>
+  <ItemGroup>
+    <Protobuf Include="Protos/*.proto" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="C:\Users\bobkata\.nuget\packages\proepordersprotobufdefinitions\1.0.4\contentFiles\any\any\Protos\orders.proto" />
+  </ItemGroup>
+</Project>

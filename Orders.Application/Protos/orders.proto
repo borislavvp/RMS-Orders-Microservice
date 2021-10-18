@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package orders;
+
+enum rpcOrderStatus {
+    Unknown = 0;
+    New = 1;
+    Preparing = 2;
+    Prepared = 3;
+    Delivering = 4;
+    Delivered = 5;
+}
+
+message rpcOrderProduct {
+    int32 productId = 1;
+    string name = 2;
+    string ingredients = 3;
+    double price = 4;
+    int32 quantity = 5;
+    string imageUrl = 6;
+}
+
+message rpcOrder {
+    int32 orderNumber = 1;
+    rpcOrderStatus status = 2;
+    string date = 3; 
+    string customerName = 4;
+    string location = 5;
+    string customerPhone = 6;
+    double amount = 7;
+}
+
+message rpcOrderStatusChangedReqest {
+    int32 orderNumber = 1;
+    rpcOrderStatus status = 2;
+}
+
+message rpcOrderAvailableReqest {
+    rpcOrder newOrder = 1;
+    repeated rpcOrderProduct products = 2;
+}
+
+message rpcOrderReadyForPickupReqest {
+    rpcOrder newOrder = 1;
+}
+
+message rpcRequestResult {
+    bool succeeded = 1;
+    string errorMessage = 2;
+}
+
+service rpcOrders{
+    rpc OrderStatusChanged (rpcOrderStatusChangedReqest) returns (rpcRequestResult){};
+    rpc OrderAvailable (rpcOrderAvailableReqest) returns (rpcRequestResult){};
+    rpc OrderReadyForPickup (rpcOrderReadyForPickupReqest) returns (rpcRequestResult){};
+}
